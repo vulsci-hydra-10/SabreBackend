@@ -44,20 +44,15 @@ app.get("/api/hello", (req, res) => {
 
 // ============ Start Server (DB is non-blocking) ============
 async function startServer() {
-  // await connectDatabase();
-  // app.listen(PORT, () => {
-  //   console.log(` Server running on http://localhost:${PORT}`);
-  // });
-    try {
+  try {
     await connectDatabase();
-
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`✅ Server running on http://localhost:${PORT}`);
-    });
   } catch (error) {
-    console.error("❌ Failed to start server:", error.message);
-    process.exit(1);
+    console.warn("⚠️ MySQL unavailable; starting without database:", error.message);
   }
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`✅ Server running on http://localhost:${PORT}`);
+  });
 }
 
 startServer();
